@@ -79,7 +79,8 @@ class SpaceShip(ObjectBase) :
 		
 		#TODO pour test 
 		self.powerSwitch[9].Etat = True
-		self.powerSwitch[10].Etat = True
+		self.powerSwitch[12].Etat = True
+		self.powerSwitch[13].Etat = True
 		
 	def Update(self, theInput):
 		
@@ -130,20 +131,28 @@ class SpaceShip(ObjectBase) :
 		if self.angle<0 : 
 			self.angle = 360 - self.angle
 		
-	def __isConnecter(self,startNoeud, noeudDejaPasser = []) :
+	def __isConnecter(self,startNoeud) :
 		
-		print(str(startNoeud) + ' | -> ' + str(noeudDejaPasser))
-		input()
+		#print('------------------------ ')
+		noeudDejaPasser = []
+		return self.__isConnecterRecursif(startNoeud,noeudDejaPasser)
+		
+	
+	def __isConnecterRecursif(self,startNoeud, noeudDejaPasser = []) :
+		
+		#print(str(startNoeud) + ' | -> ' + str(noeudDejaPasser))
+		#input()
 		if self.powerSwitch[startNoeud].IsOpen() :
 			noeudDejaPasser.append(startNoeud)
 			for noeud in self.powerSwitch[startNoeud].Adjacent:
 				if noeud.IsStartOfGraphe() and noeud.IsOpen() : 
 					return True
 				if noeud.IsOpen() and noeud.Numero not in noeudDejaPasser:
-					if self.__isConnecter(noeud.Numero) : 
+					if self.__isConnecterRecursif(noeud.Numero,noeudDejaPasser) : 
 						return True
 		
 		return False
+	
 		
 	def __ReacGauche(self):
 		if self.__isConnecter(12) :
